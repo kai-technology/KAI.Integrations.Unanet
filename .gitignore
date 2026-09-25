@@ -1,0 +1,21 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build outputs
+bin/
+obj/
+
+# Azure Functions
+local.settings.json
+
+# Testing
+TestResults/
+
+# Publish
+.publish/
+
+# Logs
+*.log
+``
