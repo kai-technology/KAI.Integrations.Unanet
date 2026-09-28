@@ -9,34 +9,24 @@ public class ProjectCreatedFunction
 {
     private readonly ILogger<ProjectCreatedFunction> _logger;
 
-    public ProjectCreatedFunction(
-        ILogger<ProjectCreatedFunction> logger)
+    public ProjectCreatedFunction(ILogger<ProjectCreatedFunction> logger)
     {
         _logger = logger;
     }
 
     [Function("ProjectCreated")]
-    public async Task<HttpResponseData> Run(
-        [HttpTrigger(
-            AuthorizationLevel.Function,
-            "post",
-            Route = "projectcreated")]
-        HttpRequestData req)
+    public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "projectcreated")] HttpRequestData req)
     {
         string body =
-            await new StreamReader(req.Body)
-                .ReadToEndAsync();
+            await new StreamReader(req.Body).ReadToEndAsync();
 
-        _logger.LogInformation(
-            "Unanet Project Created Event Received");
+        _logger.LogInformation("Unanet Project Created Event Received");
 
         _logger.LogInformation(body);
 
-        var response =
-            req.CreateResponse(HttpStatusCode.OK);
+        var response = req.CreateResponse(HttpStatusCode.OK);
 
-        await response.WriteStringAsync(
-            "Project event received.");
+        await response.WriteStringAsync("Project event received.");
 
         return response;
     }
