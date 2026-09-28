@@ -1,35 +1,32 @@
-﻿using System.Net;
+﻿using KAI.Integrations.Unanet.Services;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using System.Net;
+using System.Text.Json;
+using KAI.Integrations.Unanet.Models;
 
 namespace KAI.Integrations.Unanet.Functions;
 
 public class ProjectCreatedFunction
 {
+    private readonly IUnanetEventIngressService _ingress;
+
     private readonly ILogger<ProjectCreatedFunction> _logger;
 
-    public ProjectCreatedFunction(ILogger<ProjectCreatedFunction> logger)
+    public ProjectCreatedFunction(IUnanetEventIngressService ingress)
     {
-        _logger = logger;
+        ingress = ingress;
     }
 
     [Function("ProjectCreated")]
-    public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "projectcreated")] HttpRequestData req)
+    public Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "unanet/projects/created")] HttpRequestData request, 
+        CancellationToken cancellationToken)
     {
-        string body =
-            await new StreamReader(req.Body).ReadToEndAsync();
-
-        _logger.LogInformation("ProjectCreated event received at {Time}", DateTime.UtcNow);
-
-        _logger.LogInformation("Payload: {Payload}", body);
-
-        _logger.LogInformation("Unanet Project Created Event Received");
-
-        var response = req.CreateResponse(HttpStatusCode.OK);
-
-        await response.WriteStringAsync("Project event received.");
-
-        return response;
+        return FunctionResponseFactory.CreateAsync(
+            request,
+            _ingress,
+            UnanetRouteEventType.Created,
+            cancellationToken);
     }
 }
