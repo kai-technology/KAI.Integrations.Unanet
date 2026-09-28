@@ -19,3 +19,5 @@ TestResults/
 # Logs
 *.log
 ``
+/KAI.Integrations.Unanet/KAI.Integrations.Unanet/appsettings.Development.json
+/KAI.Integrations.Unanet/KAI.Integrations.Unanet/appsettings.Local.json
