@@ -20,9 +20,11 @@ public class ProjectCreatedFunction
         string body =
             await new StreamReader(req.Body).ReadToEndAsync();
 
-        _logger.LogInformation("Unanet Project Created Event Received");
+        _logger.LogInformation("ProjectCreated event received at {Time}", DateTime.UtcNow);
 
-        _logger.LogInformation(body);
+        _logger.LogInformation("Payload: {Payload}", body);
+
+        _logger.LogInformation("Unanet Project Created Event Received");
 
         var response = req.CreateResponse(HttpStatusCode.OK);
 
